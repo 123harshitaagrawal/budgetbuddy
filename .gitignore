@@ -1,0 +1,41 @@
+backend/venv/
+node_modules/
+.env
+
+# Logs and OS files
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.DS_Store
+Thumbs.db
+*.swp
+
+# Editors/IDEs
+.vscode/
+.idea/
+*.iml
+
+# Build artifacts
+build/
+dist/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+ENV/
+.mypy_cache/
+.pytest_cache/
+.coverage
+coverage.xml
+
+# Local DB/files
+*.sqlite3
+*.db
+
+# Docs cache
+docs/screenshots/*
+!docs/screenshots/.gitkeep
