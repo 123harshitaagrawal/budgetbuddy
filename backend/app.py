@@ -30,11 +30,11 @@ def get_db_connection():
             'port': url.port
         }
     else:
-        # Update these credentials based on your local MySQL setup
+       
         config = {
-            'user': 'root',  # Replace with your MySQL username
-            'password': 'admin123',  # Replace with your MySQL password
-            'host': '127.0.0.1',  # Use 127.0.0.1 instead of localhost if needed
+            'user': 'root',  
+            'password': 'admin123', 
+            'host': '127.0.0.1', 
             'database': 'budgetbuddy_db',
             'raise_on_warnings': True
         }
@@ -53,14 +53,13 @@ def login():
 
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
-    # Fetch by username and verify password hash in Python to support hashed passwords
     cursor.execute("SELECT * FROM users WHERE username = %s", (username,))
     user = cursor.fetchone()
     cursor.close()
     conn.close()
 
     if user:
-        # Support both hashed and legacy plaintext passwords during migration
+       
         stored_password = user.get('password') or user.get('password_hash')
         is_valid = False
         if stored_password is not None:
@@ -68,7 +67,7 @@ def login():
                 is_valid = check_password_hash(stored_password, password)
             except Exception:
                 is_valid = False
-        # Fallback for legacy rows where password is stored in plaintext column
+        
         if not is_valid and user.get('password') == password:
             is_valid = True
 
@@ -105,13 +104,13 @@ def add_expense():
     total_people = len(split_user_ids) + 1  # Including the current user
     user_share = amount / total_people
 
-    # Insert for current user (payer). Store other participants in split_user_ids
+    
     cursor.execute("""
         INSERT INTO expenses (amount, category, date, split_user_ids, user_share, user_id)
         VALUES (%s, %s, %s, %s, %s, %s)
     """, (amount, category, date, ','.join(split_user_ids), user_share, user_id))
 
-    # Insert for each split user. For their row, store payer and other participants except themselves
+    
     for split_id in split_user_ids:
         if split_id:
             others_for_this_user = [str(user_id)] + [sid for sid in split_user_ids if sid != split_id]
